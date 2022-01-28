@@ -29,7 +29,7 @@ report_list = {}
 
 
 def time_stamp():
-    print(time.strftime('%d %b %Y - %H:%M:%S'))
+    print(time.strftime('%d/%m/%Y - %H:%M:%S (UTC%z')[:-2] + ')')
 
 
 def reset_dict(dict):
@@ -52,6 +52,7 @@ while True:
 
         if synced_value == False or online_value == False or relayed_value == True:
             # print info of out of synced, offline or relayed hotspot(s)
+            time_stamp()
             print(name)
             print("synced: " + str(synced_value))
             print("online: " + str(online_value))
