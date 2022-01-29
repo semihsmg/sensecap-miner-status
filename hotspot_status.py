@@ -33,7 +33,7 @@ def time_stamp():
 
 
 def reset_dict(dict):
-    for i in enumerate(serial_numbers):
+    for i, x in enumerate(serial_numbers):
         dict[i] = 0
 
 
@@ -65,15 +65,15 @@ while True:
             if report_list[index] == 0:
                 body += \
                     '<a href=' + explorer_url + address + '>' + name + '</a>' + '\n' + \
-                    "synced: " + synced_value + '\n' + \
-                    "online: " + online_value + '\n' + \
-                    "relayed: " + relayed_value + '\n' + \
+                    "synced: " + str(synced_value) + '\n' + \
+                    "online: " + str(online_value) + '\n' + \
+                    "relayed: " + str(relayed_value) + '\n' + \
                     '<a href=' + dashboard_url + sn + '>Dashboard</a>' + '\n\n'
 
             report_list[index] += 1
 
             if report_list[index] >= 4:
-                names = + name + ', '
+                names += name + ','
 
     if len(body) > 0:
         yag.send(to=to, subject=subject, contents=body)
