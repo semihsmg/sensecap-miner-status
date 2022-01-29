@@ -42,7 +42,7 @@ reset_dict(report_list)
 while True:
     for index, sn in enumerate(serial_numbers):
         response = requests.get(url + '&sn=' + sn)
-        response_json = response.json() # get hotspot informations
+        response_json = response.json()  # get hotspot informations
 
         # strip json and only get necessary info for quick review email
         name = response_json["data"]["name"]
@@ -72,23 +72,23 @@ while True:
                     "relayed: " + str(relayed_value) + '\n' + \
                     '<a href=' + dashboard_url + sn + '>Dashboard</a>' + '\n\n'
 
-            report_list[index] += 1 # increase issue counter of hotspot
+            report_list[index] += 1  # increase issue counter of hotspot
 
-            if report_list[index] >= 4:  # within 2 hours if hotspot still not online then add that hotspot name to a list and send reminder email
+            if report_list[index] == 4:  # within 2 hours if hotspot still not online then add that hotspot name to a list and send reminder email
                 names += name + ','
 
     if len(body) > 0:
         yag.send(to=to, subject=subject, contents=body)
         body = ''
 
-    if len(names) > 0: # if names list contains any name send reminder email
-        subject2 = names + ' still down!'
-        yag.send(to=to, subject=subject2, contents='')
-
     reset_report_counter += 1
     if reset_report_counter == 8:  # after 4 hours reset report_list to send email of all hotspots that needs attention
         reset_report_counter = 0
-        for key in report_list:
-            reset_dict(report_list)
+        reset_dict(report_list)
+
+    if len(names) > 0:  # if names list contains any name send reminder email
+        subject2 = names + ' still down!'
+        yag.send(to=to, subject=subject2, contents='')
+        names = ''
 
     time.sleep(seconds - ((time.time() - start_time) % seconds))
